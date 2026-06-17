@@ -29,22 +29,29 @@
             overflow-x: hidden;
         }
 
-        .container { max-width: 600px; width: 90%; text-align: center; }
+        .container { max-width: 800px; width: 90%; text-align: center; }
 
         .card {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 40px; 
-            padding: 60px;
+            padding: 50px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            transition: all 0.6s ease;
+        }
+
+        /* Layout für Produkt-View */
+        .content-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            margin-top: 30px;
         }
 
         #product-img {
-            width: 100%;
-            max-width: 400px;
-            display: none; 
-            margin-bottom: 30px;
+            width: 50%;
             filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.3));
             animation: popIn 0.8s ease-out;
         }
@@ -54,10 +61,13 @@
             100% { opacity: 1; transform: scale(1); }
         }
 
-        .details-list { display: none; text-align: left; margin-top: 20px; }
+        .details-list { 
+            width: 50%; 
+            text-align: left; 
+        }
         
         .list-item { 
-            margin: 15px 0; 
+            margin: 20px 0; 
             display: flex; 
             align-items: center; 
             font-size: 1.2rem;
@@ -66,8 +76,8 @@
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         .btn {
@@ -78,38 +88,43 @@
             transition: 0.3s;
         }
         .btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(0, 212, 255, 0.4); }
+
+        /* Mobile Anpassung */
+        @media (max-width: 600px) {
+            .content-wrapper { flex-direction: column; }
+            #product-img, .details-list { width: 100%; }
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="card" id="main-card">
+        <div class="card">
             <div id="intro-view">
                 <h1>Aura.</h1>
                 <p>Hör die Perfektion in jedem Detail.</p>
                 <button class="btn" onclick="revealProduct()" style="margin-top: 30px;">Jetzt ansehen</button>
             </div>
 
-            <img src="image_979802.jpg" alt="Aura Kopfhörer" id="product-img">
-            
-            <div id="details" class="details-list">
-                <h2 style="margin-bottom: 15px;">Features</h2>
-                <div class="list-item" style="animation-delay: 0.2s;">✓ Audiophiler Klangraum</div>
-                <div class="list-item" style="animation-delay: 0.4s;">✓ Memory-Foam Komfort</div>
-                <div class="list-item" style="animation-delay: 0.6s;">✓ Active Noise Cancelling</div>
-                <button class="btn" onclick="location.reload()" style="background: #444; margin-top: 20px;">Zurück</button>
+            <div id="product-view" style="display: none;">
+                <h2 style="margin-bottom: 20px;">Das Aura Erlebnis</h2>
+                <div class="content-wrapper">
+                    <div class="details-list">
+                        <div class="list-item" style="animation-delay: 0.2s;">✓ Audiophiler Klangraum</div>
+                        <div class="list-item" style="animation-delay: 0.4s;">✓ Memory-Foam Komfort</div>
+                        <div class="list-item" style="animation-delay: 0.6s;">✓ Active Noise Cancelling</div>
+                        <button class="btn" onclick="location.reload()" style="background: #444; margin-top: 20px;">Zurück</button>
+                    </div>
+                    <img src="image_979802.jpg" alt="Aura Kopfhörer" id="product-img">
+                </div>
             </div>
         </div>
     </div>
 
     <script>
         function revealProduct() {
-            // Intro ausblenden
             document.getElementById('intro-view').style.display = 'none';
-            // Bild anzeigen
-            document.getElementById('product-img').style.display = 'block';
-            // Details anzeigen
-            document.getElementById('details').style.display = 'block';
+            document.getElementById('product-view').style.display = 'block';
         }
     </script>
 </body>
