@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NextGen | Aura Concept</title>
+    <title>Aura | Experience Sound</title>
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QJ3XKRFX98"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-QJ3XKRFX98');
     </script>
 
@@ -20,84 +19,80 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
-            background: radial-gradient(circle at top right, #1a1a2e, #0f0f1a);
+            background: radial-gradient(circle at 50% 50%, #1a1a2e, #050508);
             color: white; 
             font-family: 'Outfit', sans-serif;
-            overflow-x: hidden; 
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
-        .container { 
-            max-width: 600px; 
-            width: 90%;
-            margin: 50px auto; 
-            text-align: center; 
-        }
+        .container { max-width: 600px; width: 90%; text-align: center; }
 
-        /* Karten Design */
         .card {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 40px; 
-            padding: 60px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            transition: transform 0.5s ease;
         }
 
-        /* Detail-Sektion initial versteckt */
-        #details { 
-            display: none; 
-            text-align: left; 
+        /* Bild-Styling für das Aura-Headset */
+        .product-img {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.2));
+            transition: transform 0.3s ease;
         }
+
+        .product-img:hover { transform: scale(1.05); }
+
+        #details { display: none; text-align: left; }
         
-        h1 { font-size: 3.5rem; letter-spacing: -2px; margin-bottom: 20px; }
-        h2 { margin-bottom: 20px; font-size: 2rem; }
-        
-        .list-item { margin-bottom: 15px; display: flex; align-items: center; font-size: 1.1rem; }
-        .list-item::before { content: "●"; color: #00d4ff; margin-right: 15px; }
+        h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .list-item { margin: 15px 0; display: flex; align-items: center; font-size: 1.1rem; }
+        .list-item::before { content: "✓"; color: #00d4ff; margin-right: 15px; font-weight: bold; }
 
         .btn {
-            display: inline-block; 
-            margin-top: 30px; 
-            padding: 18px 35px;
+            display: inline-block;
+            margin-top: 25px; 
+            padding: 18px 40px;
             background: linear-gradient(135deg, #00d4ff, #8a2be2);
-            border-radius: 30px; 
             color: white; 
-            cursor: pointer;
+            border-radius: 50px;
+            cursor: pointer; 
             border: none; 
-            font-size: 1rem; 
-            font-weight: bold;
-            transition: transform 0.2s, opacity 0.2s;
+            font-weight: bold; 
+            font-size: 1rem;
+            transition: 0.3s;
+            text-decoration: none;
         }
-        
-        .btn:hover { transform: scale(1.05); opacity: 0.9; }
-        
-        .btn-back { background: #444; }
+        .btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(0, 212, 255, 0.4); }
     </style>
 </head>
 <body>
 
     <div class="container">
         <div class="card" id="main-view">
-            <h1>Aura <span style="color: #00d4ff;">Experience.</span></h1>
-            <p>Die Zukunft des Sounds. Klicke unten, um mehr zu erfahren.</p>
-            <button class="btn" onclick="showDetails()">Produkt ansehen</button>
+            <img src="image_979802.jpg" alt="Aura Kopfhörer" class="product-img">
+            <h1>Aura Experience</h1>
+            <p>Hör die Perfektion in jedem Detail.</p>
+            <button class="btn" onclick="showDetails()">Jetzt ansehen</button>
         </div>
 
         <div class="card" id="details">
-            <h2>Deine Aura Specs</h2>
-            <p style="margin-bottom: 25px; opacity: 0.8;">Das High-End Erlebnis für audiophile Genießer.</p>
-            
-            <div class="list-item">Extremer Komfort durch Memory-Foam</div>
-            <div class="list-item">40 Stunden Akkulaufzeit</div>
-            <div class="list-item">Aktive Geräuschunterdrückung (ANC)</div>
-            <div class="list-item">Hochauflösende Klangtreue</div>
-            
-            <button class="btn btn-back" onclick="location.reload()">Zurück</button>
+            <h2>Produkt-Highlights</h2>
+            <div class="list-item">Audiophiler Klangraum</div>
+            <div class="list-item">Memory-Foam Komfort</div>
+            <div class="list-item">Active Noise Cancelling</div>
+            <div class="list-item">40h Akkulaufzeit</div>
+            <button class="btn" onclick="location.reload()" style="background: #444;">Zurück</button>
         </div>
     </div>
 
