@@ -1,131 +1,324 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aura | Experience Sound</title>
-    
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QJ3XKRFX98"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-QJ3XKRFX98');
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aura — Experience Sound</title>
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;700&display=swap');
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QJ3XKRFX98"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QJ3XKRFX98');
+</script>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body { 
-            background: radial-gradient(circle at 50% 50%, #1a1a2e, #050508);
-            color: white; 
-            font-family: 'Outfit', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow-x: hidden;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
-        .container { max-width: 800px; width: 90%; text-align: center; }
+<style>
+:root{
+  --bg-0:#05060c;
+  --bg-1:#10121f;
+  --ink:#f4f6ff;
+  --muted:rgba(244,246,255,.55);
+  --line:rgba(255,255,255,.08);
+  --glass:rgba(255,255,255,.035);
+  --cyan:#00d4ff;
+  --violet:#8a2be2;
+  --grad:linear-gradient(135deg,#00d4ff,#8a2be2);
+}
 
-        .card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 40px; 
-            padding: 50px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            transition: all 0.6s ease;
-        }
+*{margin:0;padding:0;box-sizing:border-box;}
 
-        /* Layout für Produkt-View */
-        .content-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 40px;
-            margin-top: 30px;
-        }
+html{scroll-behavior:smooth;}
 
-        #product-img {
-            width: 50%;
-            filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.3));
-            animation: popIn 0.8s ease-out;
-        }
+body{
+  background:var(--bg-0);
+  color:var(--ink);
+  font-family:'Outfit',sans-serif;
+  font-weight:300;
+  min-height:100vh;
+  overflow-x:hidden;
+  position:relative;
+}
 
-        @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1); }
-        }
+/* ---- Ambient atmosphere ---- */
+.aurora{
+  position:fixed; inset:0; z-index:-2;
+  background:
+    radial-gradient(40% 50% at 20% 25%, rgba(0,212,255,.18), transparent 70%),
+    radial-gradient(45% 55% at 82% 70%, rgba(138,43,226,.20), transparent 70%),
+    radial-gradient(circle at 50% 50%, var(--bg-1), var(--bg-0) 75%);
+  animation:drift 18s ease-in-out infinite alternate;
+}
+@keyframes drift{
+  from{transform:scale(1) translate(0,0);}
+  to{transform:scale(1.08) translate(-1.5%,1.5%);}
+}
+.cursor-glow{
+  position:fixed; z-index:-1; top:0; left:0;
+  width:480px; height:480px; border-radius:50%;
+  background:radial-gradient(circle,rgba(0,212,255,.10),transparent 65%);
+  transform:translate(-50%,-50%);
+  pointer-events:none; transition:opacity .4s; opacity:0;
+}
 
-        .details-list { 
-            width: 50%; 
-            text-align: left; 
-        }
-        
-        .list-item { 
-            margin: 20px 0; 
-            display: flex; 
-            align-items: center; 
-            font-size: 1.2rem;
-            opacity: 0;
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
+/* ---- Shell ---- */
+.shell{
+  max-width:1080px; width:92%; margin:0 auto;
+  min-height:100vh; display:flex; flex-direction:column;
+  justify-content:center; align-items:center;
+  padding:80px 0;
+}
 
-        .btn {
-            padding: 18px 40px;
-            background: linear-gradient(135deg, #00d4ff, #8a2be2);
-            color: white; border-radius: 50px;
-            cursor: pointer; border: none; font-weight: bold; font-size: 1rem;
-            transition: 0.3s;
-        }
-        .btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(0, 212, 255, 0.4); }
+.brandmark{
+  position:fixed; top:34px; left:6%; z-index:10;
+  font-family:'Space Grotesk',sans-serif; font-weight:700;
+  font-size:1.25rem; letter-spacing:.04em;
+  display:flex; align-items:center; gap:9px;
+}
+.brandmark .dot{
+  width:9px; height:9px; border-radius:50%;
+  background:var(--grad);
+  box-shadow:0 0 14px var(--cyan);
+  animation:pulseDot 2.6s ease-in-out infinite;
+}
+@keyframes pulseDot{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.5);opacity:.6;}}
 
-        /* Mobile Anpassung */
-        @media (max-width: 600px) {
-            .content-wrapper { flex-direction: column; }
-            #product-img, .details-list { width: 100%; }
-        }
-    </style>
+/* ---- Glass card ---- */
+.card{
+  width:100%;
+  background:var(--glass);
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+  border:1px solid var(--line);
+  border-radius:40px;
+  padding:64px 56px;
+  box-shadow:0 30px 80px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.05);
+  position:relative; overflow:hidden;
+}
+
+/* ===== INTRO ===== */
+#intro{ text-align:center; }
+.eyebrow{
+  font-family:'Space Grotesk',sans-serif; font-weight:500;
+  font-size:.8rem; letter-spacing:.32em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:26px;
+}
+#intro h1{
+  font-family:'Space Grotesk',sans-serif; font-weight:700;
+  font-size:clamp(3.4rem,11vw,7.5rem);
+  line-height:.92; letter-spacing:-.03em;
+  background:linear-gradient(180deg,#fff 30%,rgba(255,255,255,.45));
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+#intro .lede{
+  font-size:clamp(1.05rem,2.4vw,1.4rem); font-weight:300;
+  color:var(--muted); max-width:30ch; margin:24px auto 40px;
+  line-height:1.55;
+}
+
+/* ---- Buttons ---- */
+.btn{
+  font-family:'Outfit',sans-serif; font-weight:500;
+  padding:17px 42px; border:none; border-radius:50px;
+  cursor:pointer; font-size:1rem; color:#06070d;
+  background:var(--grad); position:relative;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s;
+  box-shadow:0 8px 28px rgba(0,212,255,.25);
+}
+.btn:hover{ transform:translateY(-3px) scale(1.03); box-shadow:0 14px 40px rgba(0,212,255,.45); }
+.btn:active{ transform:translateY(-1px) scale(1.01); }
+.btn:focus-visible{ outline:2px solid var(--cyan); outline-offset:4px; }
+.btn.ghost{
+  background:transparent; color:var(--ink);
+  border:1px solid var(--line); box-shadow:none;
+}
+.btn.ghost:hover{ background:rgba(255,255,255,.05); box-shadow:none; }
+
+/* ===== PRODUCT ===== */
+#product{ display:none; }
+.grid{
+  display:grid; grid-template-columns:1.05fr 1fr;
+  gap:56px; align-items:center;
+}
+
+/* Signature: breathing sound-ring stage */
+.stage{ position:relative; display:flex; align-items:center; justify-content:center; min-height:340px; }
+.ring{
+  position:absolute; border-radius:50%;
+  border:1px solid rgba(0,212,255,.35);
+  inset:50% auto auto 50%; transform:translate(-50%,-50%);
+}
+.ring.r1{ width:260px; height:260px; animation:breathe 4s ease-in-out infinite; }
+.ring.r2{ width:340px; height:340px; border-color:rgba(138,43,226,.3); animation:breathe 4s ease-in-out infinite .6s; }
+.ring.r3{ width:420px; height:420px; border-color:rgba(255,255,255,.08); animation:breathe 4s ease-in-out infinite 1.2s; }
+@keyframes breathe{
+  0%,100%{ transform:translate(-50%,-50%) scale(1); opacity:.7; }
+  50%{ transform:translate(-50%,-50%) scale(1.06); opacity:.25; }
+}
+#product-img{
+  width:78%; max-width:380px; position:relative; z-index:2;
+  filter:drop-shadow(0 14px 50px rgba(0,212,255,.35));
+}
+
+.copy h2{
+  font-family:'Space Grotesk',sans-serif; font-weight:700;
+  font-size:clamp(2rem,4vw,2.9rem); line-height:1.05;
+  letter-spacing:-.02em; margin-bottom:10px;
+}
+.copy .sub{ color:var(--muted); margin-bottom:30px; font-size:1.05rem; }
+
+.features{ list-style:none; margin-bottom:34px; }
+.features li{
+  display:flex; align-items:flex-start; gap:14px;
+  padding:15px 0; border-bottom:1px solid var(--line);
+  font-size:1.05rem; font-weight:400;
+}
+.features li:last-child{ border-bottom:none; }
+.features .ic{
+  flex:none; width:26px; height:26px; border-radius:50%;
+  background:rgba(0,212,255,.12); display:grid; place-items:center;
+  color:var(--cyan); font-size:.8rem;
+}
+.features small{ display:block; color:var(--muted); font-size:.85rem; font-weight:300; margin-top:2px; }
+
+.specs{
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:18px; margin-bottom:34px;
+}
+.spec{ text-align:center; padding:18px 8px; border:1px solid var(--line); border-radius:18px; background:rgba(255,255,255,.02); }
+.spec .num{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.5rem;
+  background:var(--grad); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+.spec .lab{ color:var(--muted); font-size:.78rem; letter-spacing:.04em; margin-top:4px; }
+
+.buybar{ display:flex; align-items:center; gap:22px; flex-wrap:wrap; }
+.price{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.9rem; }
+.price small{ display:block; color:var(--muted); font-size:.78rem; font-weight:300; letter-spacing:.03em; }
+
+/* Reveal transition */
+.revealing{ opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease; }
+.revealing.in{ opacity:1; transform:none; }
+
+/* staggered list entrance */
+.features li, .spec{ opacity:0; transform:translateY(12px); }
+.in .features li{ animation:rise .55s ease forwards; }
+.in .spec{ animation:rise .55s ease forwards; }
+.in .features li:nth-child(1){animation-delay:.15s;}
+.in .features li:nth-child(2){animation-delay:.28s;}
+.in .features li:nth-child(3){animation-delay:.41s;}
+.in .spec:nth-child(1){animation-delay:.50s;}
+.in .spec:nth-child(2){animation-delay:.58s;}
+.in .spec:nth-child(3){animation-delay:.66s;}
+@keyframes rise{ to{ opacity:1; transform:none; } }
+
+@media (max-width:760px){
+  .card{ padding:44px 26px; border-radius:30px; }
+  .grid{ grid-template-columns:1fr; gap:32px; }
+  .stage{ order:-1; min-height:300px; }
+  .ring.r3{ width:340px; height:340px; }
+  .ring.r2{ width:280px; height:280px; }
+  .ring.r1{ width:220px; height:220px; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{ animation:none !important; transition:none !important; }
+  .revealing{ opacity:1; transform:none; }
+  .features li, .spec{ opacity:1; transform:none; }
+}
+</style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="card">
-            <div id="intro-view">
-                <h1>Aura.</h1>
-                <p>Hör die Perfektion in jedem Detail.</p>
-                <button class="btn" onclick="revealProduct()" style="margin-top: 30px;">Jetzt ansehen</button>
-            </div>
+<div class="aurora"></div>
+<div class="cursor-glow" id="glow"></div>
 
-            <div id="product-view" style="display: none;">
-                <h2 style="margin-bottom: 20px;">Das Aura Erlebnis</h2>
-                <div class="content-wrapper">
-                    <div class="details-list">
-                        <div class="list-item" style="animation-delay: 0.2s;">✓ Audiophiler Klangraum</div>
-                        <div class="list-item" style="animation-delay: 0.4s;">✓ Memory-Foam Komfort</div>
-                        <div class="list-item" style="animation-delay: 0.6s;">✓ Active Noise Cancelling</div>
-                        <button class="btn" onclick="location.reload()" style="background: #444; margin-top: 20px;">Zurück</button>
-                    </div>
-                    <img src="image_979802.jpg" alt="Aura Kopfhörer" id="product-img">
-                </div>
-            </div>
+<div class="brandmark"><span class="dot"></span>Aura</div>
+
+<div class="shell">
+  <div class="card">
+
+    <!-- INTRO -->
+    <section id="intro">
+      <p class="eyebrow">Premium Over-Ear · 2026</p>
+      <h1>Hör die<br>Stille.</h1>
+      <p class="lede">Aura blendet die Welt aus, damit nur eines bleibt: dein Klang, in seiner reinsten Form.</p>
+      <button class="btn" onclick="reveal()">Aura entdecken</button>
+    </section>
+
+    <!-- PRODUCT -->
+    <section id="product">
+      <div class="grid">
+        <div class="stage">
+          <span class="ring r1"></span>
+          <span class="ring r2"></span>
+          <span class="ring r3"></span>
+          <img src="image_979802.jpg" alt="Aura Over-Ear Kopfhörer" id="product-img">
         </div>
-    </div>
 
-    <script>
-        function revealProduct() {
-            document.getElementById('intro-view').style.display = 'none';
-            document.getElementById('product-view').style.display = 'block';
-        }
-    </script>
+        <div class="copy">
+          <h2>Das Aura Erlebnis</h2>
+          <p class="sub">Entwickelt für Menschen, die den Unterschied hören.</p>
+
+          <ul class="features">
+            <li><span class="ic">✓</span><span>Audiophiler Klangraum<small>Maßgefertigte 40-mm-Treiber für naturgetreue Tiefen und klare Höhen.</small></span></li>
+            <li><span class="ic">✓</span><span>Memory-Foam Komfort<small>Druckfreies Tragen über Stunden, mit atmungsaktivem Proteinleder.</small></span></li>
+            <li><span class="ic">✓</span><span>Adaptives Noise Cancelling<small>Misst die Umgebung 50.000×/Sek. und schließt sie lautlos aus.</small></span></li>
+          </ul>
+
+          <div class="specs">
+            <div class="spec"><div class="num">40h</div><div class="lab">Akkulaufzeit</div></div>
+            <div class="spec"><div class="num">‑42dB</div><div class="lab">Geräuschdämpfung</div></div>
+            <div class="spec"><div class="num">5min</div><div class="lab">= 6h Schnellladung</div></div>
+          </div>
+
+          <div class="buybar">
+            <div class="price">349&nbsp;€<small>inkl. MwSt · kostenloser Versand</small></div>
+            <button class="btn" onclick="order()">In den Warenkorb</button>
+            <button class="btn ghost" onclick="location.reload()">Zurück</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+function reveal(){
+  const intro = document.getElementById('intro');
+  const product = document.getElementById('product');
+  intro.classList.add('revealing');
+  requestAnimationFrame(()=>{
+    intro.style.opacity = 0;
+    setTimeout(()=>{
+      intro.style.display = 'none';
+      product.style.display = 'block';
+      product.classList.add('revealing');
+      requestAnimationFrame(()=> product.classList.add('in'));
+    }, 380);
+  });
+  gtag('event','reveal_product');
+}
+
+function order(){
+  gtag('event','add_to_cart',{value:349,currency:'EUR'});
+  alert('Aura wurde deinem Warenkorb hinzugefügt.');
+}
+
+// cursor glow (skips touch / reduced-motion)
+const glow = document.getElementById('glow');
+if(window.matchMedia('(pointer:fine)').matches &&
+   !window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+  window.addEventListener('pointermove', e=>{
+    glow.style.opacity = 1;
+    glow.style.left = e.clientX + 'px';
+    glow.style.top  = e.clientY + 'px';
+  });
+}
+</script>
 </body>
 </html>
