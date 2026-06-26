@@ -307,6 +307,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <script>
 function reveal(){
+  // --- Tracking: Klick auf "Aura entdecken" ---
+  // GTM: Custom Event in den dataLayer schieben (Trigger im Tag Manager: aura_entdecken)
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    'event': 'aura_entdecken',
+    'button_text': 'Aura entdecken',
+    'section': 'intro'
+  });
+
+  // --- Reveal-Animation ---
   const intro = document.getElementById('intro');
   const product = document.getElementById('product');
   intro.classList.add('revealing');
@@ -319,11 +329,12 @@ function reveal(){
       requestAnimationFrame(()=> product.classList.add('in'));
     }, 380);
   });
-  gtag('event','reveal_product');
 }
 
 function order(){
-  gtag('event','add_to_cart',{value:349,currency:'EUR'});
+  // GTM: Warenkorb-Event
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({'event':'add_to_cart','value':349,'currency':'EUR'});
   alert('Aura wurde deinem Warenkorb hinzugefügt.');
 }
 
