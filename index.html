@@ -114,6 +114,11 @@ body{
   font-family:'Space Grotesk',sans-serif; font-weight:700;
   font-size:1.25rem; letter-spacing:.04em;
   display:flex; align-items:center; gap:9px;
+  transition:opacity .4s ease, transform .4s ease;
+}
+.brandmark.hidden{
+  opacity:0; transform:translateY(-16px);
+  pointer-events:none;
 }
 .brandmark .dot{
   width:9px; height:9px; border-radius:50%;
@@ -371,7 +376,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="aurora"></div>
 <div class="cursor-glow" id="glow"></div>
 
-<div class="brandmark"><span class="dot"></span>Aura</div>
+<div class="brandmark" id="brandmark"><span class="dot"></span>Aura</div>
 
 <div class="shell">
   <div class="card">
@@ -584,6 +589,16 @@ function order(){
   window.dataLayer.push({'event':'add_to_cart','value':349,'currency':'EUR'});
   alert('Aura wurde deinem Warenkorb hinzugefügt.');
 }
+
+// Header/Logo ausblenden sobald über einen Schwellenwert gescrollt wird
+const brandmark = document.getElementById('brandmark');
+const HIDE_AT = 120; // px Scroll-Tiefe, ab der das Logo verschwindet
+function onScroll(){
+  if(window.scrollY > HIDE_AT) brandmark.classList.add('hidden');
+  else brandmark.classList.remove('hidden');
+}
+window.addEventListener('scroll', onScroll, {passive:true});
+onScroll();
 
 // cursor glow (skips touch / reduced-motion)
 const glow = document.getElementById('glow');
