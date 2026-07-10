@@ -5,6 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aura — Experience Sound</title>
 
+<!-- ===== Google Consent Mode v2 — MUSS vor GTM/gtag laufen ===== -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  // Standard: alles verweigert, bis der Nutzer zustimmt (DSGVO/TTDSG)
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'functionality_storage': 'granted',
+    'security_storage': 'granted',
+    'wait_for_update': 500
+  });
+  // Zuvor gespeicherte Einwilligung (localStorage) direkt anwenden
+  (function(){
+    try{
+      var c = JSON.parse(localStorage.getItem('aura_consent') || 'null');
+      if(c){
+        gtag('consent', 'update', {
+          'ad_storage': c.ads ? 'granted':'denied',
+          'ad_user_data': c.ads ? 'granted':'denied',
+          'ad_personalization': c.ads ? 'granted':'denied',
+          'analytics_storage': c.analytics ? 'granted':'denied'
+        });
+      }
+    }catch(e){}
+  })();
+</script>
+
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -15,8 +45,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-QJ3XKRFX98"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-QJ3XKRFX98');
 </script>
@@ -227,6 +255,92 @@ body{
 .in .spec:nth-child(3){animation-delay:.66s;}
 @keyframes rise{ to{ opacity:1; transform:none; } }
 
+/* ===== COOKIE CONSENT ===== */
+.cc-scrim{
+  position:fixed; inset:0; z-index:90;
+  background:rgba(3,4,10,.55);
+  backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);
+  opacity:0; pointer-events:none; transition:opacity .4s ease;
+}
+.cc-scrim.show{ opacity:1; pointer-events:auto; }
+
+.cc{
+  position:fixed; z-index:100;
+  left:50%; bottom:26px; transform:translateX(-50%) translateY(20px);
+  width:min(560px,92vw);
+  background:rgba(16,18,31,.78);
+  backdrop-filter:blur(26px); -webkit-backdrop-filter:blur(26px);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:30px 30px 26px;
+  box-shadow:0 30px 80px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.05);
+  opacity:0; pointer-events:none;
+  transition:opacity .5s ease, transform .5s cubic-bezier(.2,.8,.2,1);
+}
+.cc.show{ opacity:1; pointer-events:auto; transform:translateX(-50%) translateY(0); }
+.cc h3{
+  font-family:'Space Grotesk',sans-serif; font-weight:700;
+  font-size:1.35rem; letter-spacing:-.01em; margin-bottom:10px;
+  display:flex; align-items:center; gap:10px;
+}
+.cc h3 .dot{ width:9px;height:9px;border-radius:50%;background:var(--grad);box-shadow:0 0 12px var(--cyan);}
+.cc p{ color:var(--muted); font-size:.95rem; line-height:1.6; margin-bottom:20px; }
+.cc p a{ color:var(--cyan); text-decoration:none; border-bottom:1px solid rgba(0,212,255,.35); }
+.cc p a:hover{ border-color:var(--cyan); }
+
+.cc-options{ display:grid; gap:12px; margin-bottom:22px; }
+.cc-opt{
+  display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+  padding:14px 16px; border:1px solid var(--line); border-radius:16px;
+  background:rgba(255,255,255,.02);
+}
+.cc-opt .txt strong{ font-weight:500; font-size:.98rem; display:block; margin-bottom:2px; }
+.cc-opt .txt span{ color:var(--muted); font-size:.82rem; font-weight:300; }
+
+/* Toggle */
+.cc-switch{ position:relative; flex:none; width:46px; height:26px; }
+.cc-switch input{ position:absolute; opacity:0; width:100%; height:100%; margin:0; cursor:pointer; }
+.cc-switch .track{
+  position:absolute; inset:0; border-radius:50px;
+  background:rgba(255,255,255,.10); border:1px solid var(--line);
+  transition:background .3s;
+}
+.cc-switch .thumb{
+  position:absolute; top:3px; left:3px; width:20px; height:20px;
+  border-radius:50%; background:var(--ink); transition:transform .3s, background .3s;
+}
+.cc-switch input:checked + .track{ background:var(--grad); border-color:transparent; }
+.cc-switch input:checked + .track + .thumb{ transform:translateX(20px); background:#06070d; }
+.cc-switch input:disabled + .track{ background:var(--grad); opacity:.5; }
+.cc-switch input:disabled + .track + .thumb{ transform:translateX(20px); background:#06070d; }
+.cc-switch input:focus-visible + .track{ outline:2px solid var(--cyan); outline-offset:3px; }
+
+.cc-actions{ display:flex; gap:12px; flex-wrap:wrap; }
+.cc-actions .btn{ flex:1 1 auto; padding:14px 22px; font-size:.95rem; white-space:nowrap; }
+.cc-actions .btn.ghost{ flex:1 1 100%; }
+.cc-detail-toggle{
+  background:none; border:none; color:var(--muted); cursor:pointer;
+  font-family:'Outfit',sans-serif; font-size:.85rem; text-decoration:underline;
+  margin:0 auto 18px; display:block;
+}
+.cc-detail-toggle:hover{ color:var(--ink); }
+.cc-options[hidden]{ display:none; }
+
+/* Reopen button (footer-Style, dezent) */
+.cc-reopen{
+  position:fixed; bottom:22px; left:22px; z-index:80;
+  width:44px; height:44px; border-radius:50%;
+  background:rgba(16,18,31,.7); border:1px solid var(--line);
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  color:var(--muted); cursor:pointer; font-size:1.1rem;
+  display:none; place-items:center;
+  transition:color .3s, transform .3s, box-shadow .3s;
+  box-shadow:0 8px 24px rgba(0,0,0,.4);
+}
+.cc-reopen.show{ display:grid; }
+.cc-reopen:hover{ color:var(--cyan); transform:translateY(-2px); box-shadow:0 12px 30px rgba(0,212,255,.25); }
+.cc-reopen:focus-visible{ outline:2px solid var(--cyan); outline-offset:3px; }
+
 @media (max-width:760px){
   .card{ padding:44px 26px; border-radius:30px; }
   .grid{ grid-template-columns:1fr; gap:32px; }
@@ -235,12 +349,15 @@ body{
   .ring.r3{ width:360px; height:360px; }
   .ring.r2{ width:290px; height:290px; }
   .ring.r1{ width:225px; height:225px; }
+  .cc{ padding:26px 22px 22px; border-radius:24px; }
+  .cc-actions .btn{ flex:1 1 100%; }
 }
 
 @media (prefers-reduced-motion:reduce){
   *{ animation:none !important; transition:none !important; }
   .revealing{ opacity:1; transform:none; }
   .features li, .spec{ opacity:1; transform:none; }
+  .cc, .cc-scrim{ transition:none; }
 }
 </style>
 </head>
@@ -305,10 +422,142 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </div>
 
+<!-- ===== COOKIE CONSENT BANNER ===== -->
+<div class="cc-scrim" id="ccScrim"></div>
+
+<div class="cc" id="cookieBanner" role="dialog" aria-modal="true"
+     aria-labelledby="ccTitle" aria-describedby="ccDesc">
+  <h3 id="ccTitle"><span class="dot"></span>Deine Privatsphäre</h3>
+  <p id="ccDesc">
+    Wir verwenden Cookies, um unsere Website zu betreiben und – mit deiner
+    Einwilligung – die Nutzung anonym zu analysieren. Du entscheidest, was erlaubt ist.
+    Mehr dazu in unserer <a href="#" onclick="return false;">Datenschutzerklärung</a>.
+  </p>
+
+  <button class="cc-detail-toggle" id="ccToggleDetails" aria-expanded="false"
+          onclick="ccToggleDetails()">Einstellungen anpassen</button>
+
+  <div class="cc-options" id="ccOptions" hidden>
+    <div class="cc-opt">
+      <div class="txt">
+        <strong>Notwendig</strong>
+        <span>Für den Betrieb der Seite erforderlich. Immer aktiv.</span>
+      </div>
+      <label class="cc-switch">
+        <input type="checkbox" checked disabled aria-label="Notwendige Cookies (immer aktiv)">
+        <span class="track"></span><span class="thumb"></span>
+      </label>
+    </div>
+
+    <div class="cc-opt">
+      <div class="txt">
+        <strong>Statistik</strong>
+        <span>Anonyme Reichweitenmessung mit Google Analytics 4.</span>
+      </div>
+      <label class="cc-switch">
+        <input type="checkbox" id="ccAnalytics" aria-label="Statistik-Cookies erlauben">
+        <span class="track"></span><span class="thumb"></span>
+      </label>
+    </div>
+
+    <div class="cc-opt">
+      <div class="txt">
+        <strong>Marketing</strong>
+        <span>Personalisierte Werbung und Retargeting.</span>
+      </div>
+      <label class="cc-switch">
+        <input type="checkbox" id="ccAds" aria-label="Marketing-Cookies erlauben">
+        <span class="track"></span><span class="thumb"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="cc-actions">
+    <button class="btn" onclick="ccAcceptAll()">Alle akzeptieren</button>
+    <button class="btn ghost" id="ccSaveBtn" onclick="ccSaveSelection()" hidden>Auswahl speichern</button>
+    <button class="btn ghost" onclick="ccRejectAll()">Nur notwendige</button>
+  </div>
+</div>
+
+<button class="cc-reopen" id="ccReopen" aria-label="Cookie-Einstellungen öffnen"
+        title="Cookie-Einstellungen" onclick="ccOpen()">🍪</button>
+
 <script>
+/* ================= COOKIE CONSENT LOGIC ================= */
+const CC_KEY = 'aura_consent';
+const ccBanner = document.getElementById('cookieBanner');
+const ccScrim  = document.getElementById('ccScrim');
+const ccReopen = document.getElementById('ccReopen');
+const ccOptions = document.getElementById('ccOptions');
+const ccSaveBtn = document.getElementById('ccSaveBtn');
+const ccToggle = document.getElementById('ccToggleDetails');
+
+function ccShow(){ ccBanner.classList.add('show'); ccScrim.classList.add('show'); }
+function ccHide(){ ccBanner.classList.remove('show'); ccScrim.classList.remove('show'); ccReopen.classList.add('show'); }
+
+function ccApply(consent){
+  gtag('consent', 'update', {
+    'ad_storage': consent.ads ? 'granted':'denied',
+    'ad_user_data': consent.ads ? 'granted':'denied',
+    'ad_personalization': consent.ads ? 'granted':'denied',
+    'analytics_storage': consent.analytics ? 'granted':'denied'
+  });
+  window.dataLayer.push({'event':'cookie_consent_update', 'consent_analytics':consent.analytics, 'consent_ads':consent.ads});
+}
+
+function ccStore(consent){
+  consent.ts = Date.now();
+  try{ localStorage.setItem(CC_KEY, JSON.stringify(consent)); }catch(e){}
+  ccApply(consent);
+  ccHide();
+}
+
+function ccAcceptAll(){ ccStore({analytics:true, ads:true}); }
+function ccRejectAll(){ ccStore({analytics:false, ads:false}); }
+function ccSaveSelection(){
+  ccStore({
+    analytics: document.getElementById('ccAnalytics').checked,
+    ads: document.getElementById('ccAds').checked
+  });
+}
+
+function ccToggleDetails(){
+  const open = ccOptions.hasAttribute('hidden');
+  if(open){
+    ccOptions.removeAttribute('hidden');
+    ccSaveBtn.removeAttribute('hidden');
+    ccToggle.setAttribute('aria-expanded','true');
+    ccToggle.textContent = 'Weniger anzeigen';
+    // vorhandene Auswahl in Toggles spiegeln
+    try{
+      const c = JSON.parse(localStorage.getItem(CC_KEY) || 'null');
+      if(c){ document.getElementById('ccAnalytics').checked = !!c.analytics;
+             document.getElementById('ccAds').checked = !!c.ads; }
+    }catch(e){}
+  }else{
+    ccOptions.setAttribute('hidden','');
+    ccSaveBtn.setAttribute('hidden','');
+    ccToggle.setAttribute('aria-expanded','false');
+    ccToggle.textContent = 'Einstellungen anpassen';
+  }
+}
+
+function ccOpen(){
+  ccReopen.classList.remove('show');
+  if(ccOptions.hasAttribute('hidden')) ccToggleDetails();
+  ccShow();
+}
+
+// Beim Laden: prüfen ob schon eine Entscheidung vorliegt
+(function(){
+  let saved = null;
+  try{ saved = JSON.parse(localStorage.getItem(CC_KEY) || 'null'); }catch(e){}
+  if(saved){ ccReopen.classList.add('show'); }   // Entscheidung vorhanden → nur Reopen-Button
+  else{ setTimeout(ccShow, 600); }               // noch keine Entscheidung → Banner zeigen
+})();
+
+/* ================= SEITEN-LOGIK ================= */
 function reveal(){
-  // --- Tracking: Klick auf "Aura entdecken" ---
-  // GTM: Custom Event in den dataLayer schieben (Trigger im Tag Manager: aura_entdecken)
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({
     'event': 'aura_entdecken',
@@ -316,7 +565,6 @@ function reveal(){
     'section': 'intro'
   });
 
-  // --- Reveal-Animation ---
   const intro = document.getElementById('intro');
   const product = document.getElementById('product');
   intro.classList.add('revealing');
@@ -332,7 +580,6 @@ function reveal(){
 }
 
 function order(){
-  // GTM: Warenkorb-Event
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({'event':'add_to_cart','value':349,'currency':'EUR'});
   alert('Aura wurde deinem Warenkorb hinzugefügt.');
